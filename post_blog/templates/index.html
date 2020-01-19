@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Blogging</title>
+</head>
+<body>
+
+
+{% if user.is_authenticated == False %}
+<form action="login" method="post">
+{% csrf_token %}
+<input type="username" name="username" placeholder="username"><bR>
+<input type="password" name="password" placeholder="password"><bR>
+<input type="submit" name="login" value="login">
+</form>
+{% endif %}
+
+
+
+{% if user.is_authenticated == True %}
+<form action="logout" method="post">
+{% csrf_token %}
+<input type="submit" name="logout" value="logout">
+</form>
+{% endif %}
+
+
+{% if user.is_authenticated == True %}
+
+<form action="entry" method="post">
+{% csrf_token %}
+<input type="hidden" value="{{user.username}}" name="username">
+<input type="text" placeholder="blog" name="blog">
+<input type="submit" value="post" name="post">
+</form>
+
+
+{% for message in messages %}
+
+<div>
+<b>user : </b> {{message.user}}<br>
+<b>post : </b> {{message.data}}<br><br>
+</div>
+
+{% endfor %}
+
+
+
+
+
+
+{% endif %}
+
+
+
+
+
+
+
+    
+</body>
+</html>
