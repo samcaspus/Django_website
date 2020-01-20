@@ -12,10 +12,25 @@
 {% if user.is_authenticated == False %}
 <form action="login" method="post">
 {% csrf_token %}
-<input type="username" name="username" placeholder="username"><bR>
-<input type="password" name="password" placeholder="password"><bR>
+<input type="username" name="username" placeholder="username" required><bR>
+<input type="password" name="password" placeholder="password" required><bR>
 <input type="submit" name="login" value="login">
 </form>
+<br>
+<h1>Published blogs</h1>
+
+
+{% for message in messages %}
+{% if message.publish == True %}
+<div>
+<b>user : </b> {{message.user}}<br>
+<b>post : </b> {{message.data}} &nbsp;&nbsp; 
+</div>
+<br>
+{% endif %}
+{% endfor %}
+
+
 {% endif %}
 
 
@@ -28,22 +43,53 @@
 {% endif %}
 
 
+
+
+
 {% if user.is_authenticated == True %}
 
 <form action="entry" method="post">
 {% csrf_token %}
 <input type="hidden" value="{{user.username}}" name="username">
-<input type="text" placeholder="blog" name="blog">
+<input type="text" placeholder="blog" name="blog" required>
 <input type="submit" value="post" name="post">
 </form>
 
 
 {% for message in messages %}
-
+{% if message.user == user.username %}
 <div>
 <b>user : </b> {{message.user}}<br>
-<b>post : </b> {{message.data}}<br><br>
+<b>post : </b> {{message.data}} &nbsp;&nbsp;
+
+{% if message.publish == False%}
+<form action="publish" method="post">
+{% csrf_token %}
+<input type="hidden" value="{{message.id}}" name="identity">
+<input type="submit" value="publish" name="publish"><br>
+</form> 
+{% else %}
+
+
+<form action="unpublish" method="post">
+{% csrf_token %}
+<input type="hidden" value="{{message.id}}" name="identity">
+<input type="submit" value="unpublish" name="publish"><br>
+</form> 
+
+{% endif %}
+
+
+<form action="delete" method="post">
+{% csrf_token %}
+<input type="hidden" value="{{message.id}}" name="identity">
+<input type="submit" value="delete" name="delete"><br>
+</form>
+
 </div>
+
+<br>
+{% endif %}
 
 {% endfor %}
 

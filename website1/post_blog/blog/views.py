@@ -4,7 +4,7 @@ from .models import blogging
 
 # Create your views here.
 def index(request):
-    data = blogging.objects.all()
+    data = blogging.objects.all().order_by("-id")
     return render(request,'index.html',{'messages':data})
 
 def login(request):
@@ -14,6 +14,16 @@ def login(request):
     if user is not None:
         auth.login(request,user)
     
+    return redirect('/')
+
+def publish(request):
+    identity = request.POST["identity"]
+    blogging.objects.filter(id=identity).update(publish=True)
+    return redirect('/')
+
+def unpublish(request):
+    identity = request.POST["identity"]
+    blogging.objects.filter(id=identity).update(publish=False)
     return redirect('/')
     
 
@@ -27,8 +37,15 @@ def entry(request):
     b.save(force_insert=True)
     return redirect('/')
 
+def delete(request):
+    identity = request.POST["identity"]
+    blogging.objects.get(id=identity).delete()
+    return redirect('/')
+
 
 def logout(request):
     auth.logout(request)
     return redirect('/')
+
+
     
