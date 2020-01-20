@@ -13,10 +13,9 @@ def login(request):
     user = auth.authenticate(username = username,password=password)
     if user is not None:
         auth.login(request,user)
-        return redirect('/')
-    else:
-        data = blogging.object.all()
-        return render(request,'index.html',{'messages':data})
+    
+    return redirect('/')
+    
 
 
 
