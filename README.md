@@ -1,1 +1,1 @@
-# Django_website_dummy_practice
+# Django_websites
