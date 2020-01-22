@@ -13,8 +13,7 @@ def login(request):
     user = auth.authenticate(username = username,password=password)
     if user is not None:
         auth.login(request,user)
-    
-    return redirect('/')
+    return redirect('/loggedin')
 
 def publish(request):
     identity = request.POST["identity"]
@@ -26,26 +25,34 @@ def unpublish(request):
     blogging.objects.filter(id=identity).update(publish=False)
     return redirect('/')
     
-
-
-
 def entry(request):
     username = request.POST["username"]
     blog = request.POST["blog"]
-    print("dsfsdsadsdsacs",username,blog)
+    # print(username,blog)
     b = blogging(user = username, data = blog)
     b.save(force_insert=True)
-    return redirect('/')
+    return redirect('/entered')
 
 def delete(request):
     identity = request.POST["identity"]
     blogging.objects.get(id=identity).delete()
-    return redirect('/')
+    return redirect('/deleted')
 
 
 def logout(request):
     auth.logout(request)
+    return redirect('/loggedout')
+
+def loggedin(request):
     return redirect('/')
 
+def loggedout(request):
+    return redirect('/')
+
+def deleted(request):
+    return redirect('/')
+
+def entered(request):
+    return redirect('/')
 
     
