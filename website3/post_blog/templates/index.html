@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Blogging</title>
+</head>
+<body>
+
+
+{% if user.is_authenticated == False %}
+<form action="login" method="post">
+{% csrf_token %}
+<input type="username" name="username" placeholder="username" required><bR>
+<input type="password" name="password" placeholder="password" required><bR>
+<input type="submit" name="login" value="login">
+</form>
+<br>
+<h1>Published blogs</h1>
+
+
+{% for message in messages %}
+{% if message.publish == True %}
+<div>
+<b>user : </b> {{message.user}}<br>
+<b>post : </b> {{message.data}}<br> 
+<b>patients_name : </b> {{message.patient_name}} &nbsp;&nbsp;
+</div>
+<br>
+{% endif %}
+{% endfor %}
+
+
+{% endif %}
+
+
+
+{% if user.is_authenticated == True %}
+<form action="logout" method="post">
+{% csrf_token %}
+<input type="submit" name="logout" value="logout">
+</form>
+{% endif %}
+
+
+
+
+
+{% if user.is_authenticated == True %}
+
+<form action="entry" method="post">
+{% csrf_token %}
+<input type="hidden" value="{{user.username}}" name="username">
+<input type="text" placeholder="blog" name="blog" required>
+<input type="text" placeholder="patients name" name="patient_name" required>
+<input type="submit" value="save as draft" name="post">
+</form>
+
+
+{% for message in messages %}
+{% if message.user == user.username %}
+<div>
+<b>user : </b> {{message.user}}<br>
+<b>post : </b> {{message.data}}<br> 
+<b>patients_name : </b> {{message.patient_name}} &nbsp;&nbsp;
+{% if message.publish == False%}
+<form action="publish" method="post">
+{% csrf_token %}
+<input type="hidden" value="{{message.id}}" name="identity">
+<input type="submit" value="publish" name="publish"><br>
+</form> 
+{% else %}
+
+
+<form action="unpublish" method="post">
+{% csrf_token %}
+<input type="hidden" value="{{message.id}}" name="identity">
+<input type="submit" value="unpublish" name="publish"><br>
+</form> 
+
+{% endif %}
+
+
+<form action="delete" method="post">
+{% csrf_token %}
+<input type="hidden" value="{{message.id}}" name="identity">
+<input type="submit" value="delete" name="delete"><br>
+</form>
+
+</div>
+
+<br>
+{% endif %}
+
+{% endfor %}
+
+
+
+
+
+
+{% endif %}
+
+
+
+
+
+
+
+    
+</body>
+</html>
