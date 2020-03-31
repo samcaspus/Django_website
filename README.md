@@ -1,1 +1,2 @@
-# Django_websites
+# django_websites
+## Has API, Sqlite
