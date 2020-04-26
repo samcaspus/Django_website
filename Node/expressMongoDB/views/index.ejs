@@ -1,0 +1,56 @@
+<html>
+
+<head>
+    <title>
+        Blogs for EJS
+    </title>
+    <style>
+        .blogBox {
+            height: 40px;
+            width: 100%;
+        }
+
+        .submitButton {
+            width: 100%;
+            height: 50px;
+            background-color: darkslategray;
+            border-radius: 100px;
+            ;
+        }
+
+        li {
+            font-size: 25px;
+            border: 5px solid black;
+            padding: 10px;
+            margin: 5px;
+        }
+    </style>
+
+</head>
+
+<body>
+    <h1> A Blogging website on EJS and MONGO DB</h1>
+    <form action="post-blog" method="POST">
+        <textarea class="blogBox" name="blog" required>
+            </textarea required><br>
+            <input class="submitButton" type="submit" name="submit" value="POST">
+        </form>
+
+
+        <ul style="list-style-type: none;">
+
+            <% for( let i of content ) { %>
+            
+                <li><%=  i.content %>
+          <a href="./delete-blog/<%= i._id %>">
+            <button style=" height: 40px;">
+                Delete post
+            </button>
+           
+                </a> 
+            </li>   
+            <%  }  %>
+        </ul>
+
+    </body>
+</html>
